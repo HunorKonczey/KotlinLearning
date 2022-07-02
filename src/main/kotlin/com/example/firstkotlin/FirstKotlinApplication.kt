@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class FirstkotlinApplication
+class FirstKotlinApplication
 
 fun main(args: Array<String>) {
-	runApplication<FirstkotlinApplication>(*args)
+	runApplication<FirstKotlinApplication>(*args)
 }
