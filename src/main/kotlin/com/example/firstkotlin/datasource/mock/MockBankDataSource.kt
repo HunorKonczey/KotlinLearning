@@ -11,7 +11,7 @@ class MockBankDataSource : BankDataSource {
     val banks = mutableListOf(
         Bank("1234", 3.14, 17),
         Bank("1010", 17.0, 5),
-        Bank("9876", 20.00, 100)
+        Bank( "9876", 20.00, 100)
     )
 
     override fun retrieveBanks(): Collection<Bank> {
