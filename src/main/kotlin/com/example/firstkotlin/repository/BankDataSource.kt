@@ -1,16 +1,17 @@
-package com.example.firstkotlin.datasource
+package com.example.firstkotlin.repository
 
 import com.example.firstkotlin.model.Bank
+import org.bson.types.ObjectId
 
 interface BankDataSource {
 
     fun retrieveBanks(): Collection<Bank>
 
-    fun retrieveBank(accountNumber: String): Bank
+    fun retrieveBank(id: ObjectId): Bank
 
     fun createBank(bank: Bank): Bank
 
     fun updateBank(bank: Bank): Bank
 
-    fun deleteBank(accountNumber: String)
+    fun deleteBank(id: ObjectId)
 }

@@ -1,4 +1,4 @@
-package com.example.firstkotlin.datasource.mock
+package com.example.firstkotlin.repository.mock
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -22,8 +22,7 @@ internal class MockBankDataSourceTest {
         val banks = mockBankDataSource.retrieveBanks()
 
         // then
-        assertThat(banks).allMatch { it.accountNumber.isNotBlank() }
-        assertThat(banks).allMatch { it.trust != 0.0 }
-        assertThat(banks).allMatch { it.transactionFee != 0 }
+        assertThat(banks).allMatch { it.id!!.toHexString().isNotBlank() }
+        assertThat(banks).allMatch { it.name.isNotBlank() }
     }
 }

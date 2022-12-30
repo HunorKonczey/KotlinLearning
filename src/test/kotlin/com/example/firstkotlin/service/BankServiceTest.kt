@@ -1,14 +1,14 @@
 package com.example.firstkotlin.service
 
-import com.example.firstkotlin.datasource.MongoBankDataSource
+import com.example.firstkotlin.repository.MongoBankRepository
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 
 internal class BankServiceTest {
 
-    private val mongoBankDataSource: MongoBankDataSource = mockk(relaxed = true)
-    private val bankService = BankService(mongoBankDataSource)
+    private val mongoBankRepository: MongoBankRepository = mockk(relaxed = true)
+    private val bankService = BankService(mongoBankRepository)
 
     @Test
     fun `should call its data source retrieve banks`() {
@@ -16,6 +16,6 @@ internal class BankServiceTest {
         bankService.getBanks()
 
         // then
-        verify(exactly = 1) { mongoBankDataSource.findAll()}
+        verify(exactly = 1) { mongoBankRepository.findAll()}
     }
 }

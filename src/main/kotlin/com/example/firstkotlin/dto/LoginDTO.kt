@@ -1,4 +1,4 @@
-package com.example.firstkotlin.dtos
+package com.example.firstkotlin.dto
 
 data class LoginDTO(
     val email: String,

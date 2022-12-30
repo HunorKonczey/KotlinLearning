@@ -1,5 +1,6 @@
 package com.example.firstkotlin.controller
 
+import com.example.firstkotlin.constants.UrlConstant.BANKS_URL
 import com.example.firstkotlin.model.Bank
 import com.example.firstkotlin.service.BankService
 import org.springframework.http.HttpStatus
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 import java.lang.IllegalArgumentException
 
 @RestController
-@RequestMapping("api/banks")
+@RequestMapping(BANKS_URL)
 class BankController(private val service: BankService) {
 
     @ExceptionHandler(NoSuchElementException::class)
@@ -22,8 +23,8 @@ class BankController(private val service: BankService) {
     @GetMapping
     fun getBanks(): Collection<Bank> = service.getBanks()
 
-    @GetMapping("/{accountNumber}")
-    fun getBank(@PathVariable accountNumber: String) = service.getBank(accountNumber)
+    @GetMapping("/{id}")
+    fun getBank(@PathVariable id: String) = service.getBank(id)
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -32,7 +33,7 @@ class BankController(private val service: BankService) {
     @PatchMapping
     fun updateBank(@RequestBody bank: Bank): Bank = service.updateBank(bank)
 
-    @DeleteMapping("/{accountNumber}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteBank(@PathVariable accountNumber: String) = service.deleteBank(accountNumber)
+    fun deleteBank(@PathVariable id: String) = service.deleteBank(id)
 }

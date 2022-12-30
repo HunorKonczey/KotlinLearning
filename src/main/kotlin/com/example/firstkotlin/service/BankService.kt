@@ -1,19 +1,19 @@
 package com.example.firstkotlin.service
 
-import com.example.firstkotlin.datasource.MongoBankDataSource
+import com.example.firstkotlin.repository.MongoBankRepository
 import com.example.firstkotlin.model.Bank
+import org.bson.types.ObjectId
 import org.springframework.stereotype.Service
 
 @Service
-class BankService(private val dataSource: MongoBankDataSource) {
+class BankService(private val repository: MongoBankRepository) {
+    fun getBanks(): Collection<Bank> = repository.findAll()
 
-    fun getBanks(): Collection<Bank> = dataSource.findAll()
+    fun getBank(id: String): Bank = repository.findById(ObjectId(id)).orElse(null)
 
-    fun getBank(accountNumber: String): Bank = dataSource.findById(accountNumber).get()
+    fun addBank(bank: Bank): Bank = repository.save(bank)
 
-    fun addBank(bank: Bank): Bank = dataSource.save(bank)
+    fun updateBank(bank: Bank): Bank = repository.save(bank)
 
-    fun updateBank(bank: Bank): Bank = dataSource.save(bank)
-
-    fun deleteBank(accountNumber: String) = dataSource.deleteById(accountNumber)
+    fun deleteBank(id: String) = repository.deleteById(ObjectId(id))
 }

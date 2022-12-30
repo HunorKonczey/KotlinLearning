@@ -1,39 +1,39 @@
 package com.example.firstkotlin.model
 
-import com.example.firstkotlin.dtos.RegisterDTO
-import com.fasterxml.jackson.annotation.JsonProperty
+import com.example.firstkotlin.dto.RegisterDTO
+import com.fasterxml.jackson.annotation.JsonGetter
+import com.fasterxml.jackson.annotation.JsonIgnore
+import lombok.NoArgsConstructor
+import org.bson.types.ObjectId
+import org.springframework.data.mongodb.core.mapping.DBRef
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Encrypted
 import org.springframework.data.mongodb.core.mapping.MongoId
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 @Document("users")
-class User {
+@NoArgsConstructor
+data class User(
     @MongoId
-    @JsonProperty
-    private lateinit var id: String
-
-    @JsonProperty
-    private var name: String = ""
-
-    @JsonProperty
-    private var email: String = ""
-
-    @JsonProperty("encodedPassword")
+    val id: ObjectId? = ObjectId(),
+    val name: String,
+    val email: String,
     @Encrypted
-    private var password: String = ""
+    @JsonIgnore
+    val password: String,
+    @DBRef(lazy = true)
+    val roleIds: MutableList<Role>) {
+
+    @JsonGetter("id")
+    fun getId(): String = id!!.toHexString()
 
     object ModelMapper {
-        fun from(registerDTO: RegisterDTO) = User(registerDTO.name, registerDTO.email, registerDTO.password)
-    }
-
-    constructor(name: String, email: String, password: String) {
-        this.name = name
-        this.email = email
-        this.password = password
-    }
-
-    fun comparePassword(password: String): Boolean {
-        return BCryptPasswordEncoder().matches(password, this.password)
+        fun from(registerDTO: RegisterDTO) = User(
+            null,
+            registerDTO.name,
+            registerDTO.email,
+            BCryptPasswordEncoder().encode(registerDTO.password),
+            mutableListOf()
+        )
     }
 }

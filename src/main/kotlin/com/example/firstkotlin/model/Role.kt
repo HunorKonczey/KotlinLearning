@@ -1,21 +1,18 @@
 package com.example.firstkotlin.model
 
-import com.fasterxml.jackson.annotation.JsonFormat
+import com.example.firstkotlin.enum.RoleType
 import com.fasterxml.jackson.annotation.JsonGetter
 import lombok.AllArgsConstructor
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.MongoId
-import java.util.Date
 
 @AllArgsConstructor
-@Document("banks")
-data class Bank(
+@Document("roles")
+data class Role(
     @MongoId
     val id: ObjectId? = ObjectId(),
-    val name: String,
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    val foundationDate: Date
+    val name: RoleType
 ) {
     @JsonGetter("id")
     fun getId(): String = id!!.toHexString()
