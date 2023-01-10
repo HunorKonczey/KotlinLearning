@@ -1,13 +1,13 @@
 package com.example.firstkotlin.service
 
-import com.example.firstkotlin.repository.MongoBankRepository
+import com.example.firstkotlin.repository.mongo.BankRepository
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 
 internal class BankServiceTest {
 
-    private val mongoBankRepository: MongoBankRepository = mockk(relaxed = true)
+    private val mongoBankRepository: BankRepository = mockk(relaxed = true)
     private val bankService = BankService(mongoBankRepository)
 
     @Test

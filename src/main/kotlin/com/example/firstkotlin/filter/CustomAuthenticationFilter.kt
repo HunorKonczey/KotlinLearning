@@ -1,5 +1,6 @@
 package com.example.firstkotlin.filter
 
+import com.example.firstkotlin.service.UserService
 import com.example.firstkotlin.util.JwtUtil
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
@@ -12,12 +13,13 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class CustomAuthenticationFilter(private val authenticationManager: AuthenticationManager) : UsernamePasswordAuthenticationFilter() {
+class CustomAuthenticationFilter(private val authenticationManager: AuthenticationManager, private val userService: UserService) : UsernamePasswordAuthenticationFilter() {
 
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
         val username = request?.getParameter("email")
         val password = request?.getParameter("password")
         val authenticationToken = UsernamePasswordAuthenticationToken(username, password)
+        authenticationToken.details = userService.findByEmail(username!!)
         return authenticationManager.authenticate(authenticationToken)
     }
 

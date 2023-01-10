@@ -5,6 +5,7 @@ import com.example.firstkotlin.constants.UrlConstant.LOGIN_URL
 import com.example.firstkotlin.constants.UrlConstant.REFRESH_URL
 import com.example.firstkotlin.dto.MessageDTO
 import com.example.firstkotlin.enum.MessageStatus
+import com.example.firstkotlin.service.UserService
 import com.example.firstkotlin.util.JwtUtil
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.http.HttpHeaders.AUTHORIZATION
@@ -20,7 +21,7 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class CustomAuthorizationFilter : OncePerRequestFilter() {
+class CustomAuthorizationFilter(private val userService: UserService) : OncePerRequestFilter() {
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
@@ -40,6 +41,8 @@ class CustomAuthorizationFilter : OncePerRequestFilter() {
                         .map { role -> SimpleGrantedAuthority(role) }
                         .collect(Collectors.toList())
                     val authenticationToken = UsernamePasswordAuthenticationToken(userName, null, authorities)
+                    val user = userService.findByEmail(userName)
+                    authenticationToken.details = user
                     SecurityContextHolder.getContext().authentication = authenticationToken
                     filterChain.doFilter(request, response)
                 } catch (ex: Exception) {

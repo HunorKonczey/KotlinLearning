@@ -3,6 +3,7 @@ package com.example.firstkotlin.controller
 import com.example.firstkotlin.constants.UrlConstant.BANKS_URL
 import com.example.firstkotlin.model.Bank
 import com.example.firstkotlin.service.BankService
+import com.example.firstkotlin.service.UserBankService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -10,7 +11,7 @@ import java.lang.IllegalArgumentException
 
 @RestController
 @RequestMapping(BANKS_URL)
-class BankController(private val service: BankService) {
+class BankController(private val service: BankService, private val userBankService: UserBankService) {
 
     @ExceptionHandler(NoSuchElementException::class)
     fun handleNotFound(e: NoSuchElementException): ResponseEntity<String> =
@@ -35,5 +36,15 @@ class BankController(private val service: BankService) {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteBank(@PathVariable id: String) = service.deleteBank(id)
+    fun deleteBank(@PathVariable id: String) = service.deleteBankById(id)
+
+    @GetMapping("/user/{bankId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    fun saveUserBank(@PathVariable bankId: String) = userBankService.saveUserBank(bankId)
+
+    @GetMapping("user")
+    fun getUserBanks() = userBankService.getUserBanks()
+
+    @GetMapping("/delete/{bankId}\"")
+    fun deleteUserBank(@PathVariable bankId: String) = userBankService.deleteById(bankId)
 }

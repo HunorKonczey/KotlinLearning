@@ -1,7 +1,7 @@
 package com.example.firstkotlin.service
 
-import com.example.firstkotlin.repository.MongoRoleRepository
-import com.example.firstkotlin.repository.MongoUserRepository
+import com.example.firstkotlin.repository.mongo.RoleRepository
+import com.example.firstkotlin.repository.mongo.UserRepository
 import com.example.firstkotlin.enum.RoleType
 import com.example.firstkotlin.model.Role
 import com.example.firstkotlin.model.User
@@ -15,7 +15,7 @@ import java.util.stream.Collectors
 import kotlin.jvm.Throws
 
 @Service
-class UserService(private val repository: MongoUserRepository, private val roleRepository: MongoRoleRepository) : UserDetailsService {
+class UserService(private val repository: UserRepository, private val roleRepository: RoleRepository) : UserDetailsService {
     fun saveUser(user: User): User {
         val role: Role? = roleRepository.findByName(RoleType.USER.name).orElse(null)
         val roleAdmin: Role? = roleRepository.findByName(RoleType.ADMIN.name).orElse(null)

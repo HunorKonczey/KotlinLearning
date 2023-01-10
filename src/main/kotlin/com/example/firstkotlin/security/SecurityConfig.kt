@@ -8,6 +8,7 @@ import com.example.firstkotlin.constants.UrlConstant.ROLES_URL
 import com.example.firstkotlin.enum.RoleType
 import com.example.firstkotlin.filter.CustomAuthenticationFilter
 import com.example.firstkotlin.filter.CustomAuthorizationFilter
+import com.example.firstkotlin.service.UserService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -22,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig(val userDetailsService: UserDetailsService) : WebSecurityConfigurerAdapter() {
+class SecurityConfig(private val userDetailsService: UserDetailsService, private val userService: UserService) : WebSecurityConfigurerAdapter() {
     val passwordEncoder: BCryptPasswordEncoder = BCryptPasswordEncoder()
 
     override fun configure(auth: AuthenticationManagerBuilder) {
@@ -30,7 +31,7 @@ class SecurityConfig(val userDetailsService: UserDetailsService) : WebSecurityCo
     }
 
     override fun configure(http: HttpSecurity) {
-        val customAuthFilter = CustomAuthenticationFilter(authenticationManagerBean())
+        val customAuthFilter = CustomAuthenticationFilter(authenticationManagerBean(), userService)
         customAuthFilter.setFilterProcessesUrl("/$LOGIN_URL")
         http.csrf().disable()
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -40,7 +41,7 @@ class SecurityConfig(val userDetailsService: UserDetailsService) : WebSecurityCo
             .hasAnyAuthority(RoleType.ADMIN.name)
         http.authorizeRequests().anyRequest().authenticated()
         http.addFilter(customAuthFilter)
-        http.addFilterBefore(CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter::class.java)
+        http.addFilterBefore(CustomAuthorizationFilter(userService), UsernamePasswordAuthenticationFilter::class.java)
     }
 
     @Bean

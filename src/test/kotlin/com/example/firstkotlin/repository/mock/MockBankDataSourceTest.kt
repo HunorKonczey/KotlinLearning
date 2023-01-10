@@ -10,7 +10,7 @@ internal class MockBankDataSourceTest {
     @Test
     fun `should provide a collection of banks`() {
         // when
-        val banks = mockBankDataSource.retrieveBanks()
+        val banks = mockBankDataSource.getBanks()
 
         // then
         assertThat(banks.size).isGreaterThanOrEqualTo(3)
@@ -19,7 +19,7 @@ internal class MockBankDataSourceTest {
     @Test
     fun `should provide some mock data`() {
         // when
-        val banks = mockBankDataSource.retrieveBanks()
+        val banks = mockBankDataSource.getBanks()
 
         // then
         assertThat(banks).allMatch { it.id!!.toHexString().isNotBlank() }

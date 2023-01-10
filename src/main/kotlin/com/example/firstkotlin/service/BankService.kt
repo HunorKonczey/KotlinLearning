@@ -1,12 +1,12 @@
 package com.example.firstkotlin.service
 
-import com.example.firstkotlin.repository.MongoBankRepository
+import com.example.firstkotlin.repository.mongo.BankRepository
 import com.example.firstkotlin.model.Bank
 import org.bson.types.ObjectId
 import org.springframework.stereotype.Service
 
 @Service
-class BankService(private val repository: MongoBankRepository) {
+class BankService(private val repository: BankRepository) {
     fun getBanks(): Collection<Bank> = repository.findAll()
 
     fun getBank(id: String): Bank = repository.findById(ObjectId(id)).orElse(null)
@@ -15,5 +15,5 @@ class BankService(private val repository: MongoBankRepository) {
 
     fun updateBank(bank: Bank): Bank = repository.save(bank)
 
-    fun deleteBank(id: String) = repository.deleteById(ObjectId(id))
+    fun deleteBankById(id: String) = repository.deleteById(ObjectId(id))
 }
