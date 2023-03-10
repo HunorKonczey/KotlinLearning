@@ -28,11 +28,10 @@ class TransactionService(private val repository: TransactionRepository,
             throw NoTransactionAmountException(transactionAmount)
         }
 
-        val senderUserBank = userBankRepository.findById(senderUserBankId).orElse(null)
-        val receiverUserBank = userBankRepository.findById(ObjectId(transactionDTO.receiverUserBankId)).orElse(null)
-        if (senderUserBank == null && receiverUserBank == null) {
-            throw NotFoundException()
-        }
+        val senderUserBank = userBankRepository.findById(senderUserBankId)
+            .orElseThrow { NotFoundException() }
+        val receiverUserBank = userBankRepository.findById(ObjectId(transactionDTO.receiverUserBankId))
+            .orElseThrow { NotFoundException() }
 
         val transaction = Transaction(ObjectId(), senderUserBank, receiverUserBank,
             transactionAmount, TransactionStatus.ACCEPTED, Date())

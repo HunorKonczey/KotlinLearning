@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.data.mongodb.repository.Query
 
 interface TransactionRepository : MongoRepository<Transaction, ObjectId> {
+    
     @Query("{ 'userBank.id': ?0 }")
     fun findByUserBankId(userBankId: ObjectId) : UserBankAmount
 }

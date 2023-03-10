@@ -20,6 +20,9 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.web.cors.CorsConfiguration
+import javax.servlet.http.HttpServletRequest
+
 
 @Configuration
 @EnableWebSecurity
@@ -33,6 +36,7 @@ class SecurityConfig(private val userDetailsService: UserDetailsService, private
     override fun configure(http: HttpSecurity) {
         val customAuthFilter = CustomAuthenticationFilter(authenticationManagerBean(), userService)
         customAuthFilter.setFilterProcessesUrl("/$LOGIN_URL")
+        http.cors().configurationSource { CorsConfiguration().applyPermitDefaultValues() }
         http.csrf().disable()
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         http.authorizeRequests().antMatchers("/$REGISTER_URL/**", "/$LOGIN_URL/**", "/$REFRESH_URL/**")

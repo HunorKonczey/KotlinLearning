@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.repository.Query
 import java.util.*
 
 interface UserRepository : MongoRepository<User, ObjectId> {
+
     @Query("{ 'email': ?0 }")
     fun findByEmail(email: String): Optional<User>
 }
