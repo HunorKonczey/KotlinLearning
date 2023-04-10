@@ -34,17 +34,18 @@ class BankController(private val service: BankService, private val userBankServi
     @PatchMapping
     fun updateBank(@RequestBody bank: Bank): Bank = service.updateBank(bank)
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteBank(@PathVariable id: String) = service.deleteBankById(id)
 
-    @GetMapping("/user/{bankId}")
+    @PostMapping("user")
     @ResponseStatus(HttpStatus.CREATED)
-    fun saveUserBank(@PathVariable bankId: String) = userBankService.saveUserBank(bankId)
+    fun saveUserBank(@RequestParam bankId: String) = userBankService.saveUserBank(bankId)
 
     @GetMapping("user")
     fun getUserBanks() = userBankService.getUserBanks()
 
-    @GetMapping("/delete/{bankId}\"")
+    @DeleteMapping("{bankId}\"")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteUserBank(@PathVariable bankId: String) = userBankService.deleteById(bankId)
 }
