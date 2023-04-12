@@ -17,7 +17,7 @@ open class UserBankAmount(
     @DBRef(lazy = false)
     @Indexed(unique = true)
     val userBank: UserBank,
-    val accountAmount: Double,
+    var accountAmount: Double,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
     val updatedDate: Date,

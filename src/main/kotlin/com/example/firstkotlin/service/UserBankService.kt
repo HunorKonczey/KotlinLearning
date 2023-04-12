@@ -1,5 +1,7 @@
 package com.example.firstkotlin.service
 
+import com.example.firstkotlin.dto.AmountDTO
+import com.example.firstkotlin.dto.UserBankDTO
 import com.example.firstkotlin.model.Bank
 import com.example.firstkotlin.model.User
 import com.example.firstkotlin.model.UserBank
@@ -12,6 +14,7 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import java.util.*
+import java.util.stream.Collectors
 
 
 @Service
@@ -35,7 +38,41 @@ class UserBankService(private val repository: UserBankRepository,
         return repository.findAllByUserId(user.id!!)
     }
 
+    fun getUserBanksWithAmounts() : Collection<UserBankDTO> {
+        val user: User = SecurityContextHolder.getContext().authentication.details as User
+        val userBanks = repository.findAllByUserId(user.id!!)
+        return userBanks.stream()
+            .map { userBank -> mapUserBankToUserBankDTO(userBank) }
+            .collect(Collectors.toList())
+    }
+
+    fun getUserBanksWithoutLoggedUser() : Collection<UserBank> {
+        val user: User = SecurityContextHolder.getContext().authentication.details as User
+        val userBanks = repository.findAll()
+        return userBanks.stream()
+            .filter { userBank -> userBank.user.id != user.id!! }
+            .collect(Collectors.toList())
+    }
+
+    fun addAmount(amountDTO: AmountDTO) {
+        val userBankAmount = userBankAmountRepository.findByUserBankId(ObjectId(amountDTO.userBankId))
+        userBankAmount.accountAmount += amountDTO.amount
+        userBankAmountRepository.save(userBankAmount)
+    }
+
+    fun mapUserBankToUserBankDTO(userBank: UserBank) : UserBankDTO {
+        val userBankAmount = userBankAmountRepository.findByUserBankId(userBank.id!!)
+        return UserBankDTO(userBank.id.toString(),
+            userBankAmount.id.toString(),
+            userBank.bank.name,
+            userBankAmount.accountAmount,
+            userBank.addedDate)
+    }
+
     fun getUserBankById(id: String) = repository.findById(ObjectId(id))
 
-    fun deleteById(id: String) = repository.deleteById(ObjectId(id))
+    fun deleteById(id: String) {
+        repository.deleteById(ObjectId(id))
+        userBankAmountRepository.delete(userBankAmountRepository.findByUserBankId(ObjectId(id)))
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.firstkotlin.controller
 
 import com.example.firstkotlin.constants.UrlConstant.BANKS_URL
+import com.example.firstkotlin.dto.AmountDTO
 import com.example.firstkotlin.model.Bank
 import com.example.firstkotlin.service.BankService
 import com.example.firstkotlin.service.UserBankService
@@ -45,7 +46,16 @@ class BankController(private val service: BankService, private val userBankServi
     @GetMapping("user")
     fun getUserBanks() = userBankService.getUserBanks()
 
-    @DeleteMapping("{bankId}\"")
+    @GetMapping("user/amounts")
+    fun getUserBanksWithAmounts() = userBankService.getUserBanksWithAmounts()
+
+    @GetMapping("user/others")
+    fun getUserBanksWithoutLoggedUser() = userBankService.getUserBanksWithoutLoggedUser()
+
+   @PostMapping("user/amount")
+   fun addAmount(@RequestBody amountDTO : AmountDTO) = userBankService.addAmount(amountDTO)
+
+    @DeleteMapping("user")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteUserBank(@PathVariable bankId: String) = userBankService.deleteById(bankId)
+    fun deleteUserBank(@RequestParam bankId: String) = userBankService.deleteById(bankId)
 }
