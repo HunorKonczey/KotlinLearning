@@ -2,6 +2,7 @@ package com.example.firstkotlin.controller
 
 import com.example.firstkotlin.constants.UrlConstant.BANKS_URL
 import com.example.firstkotlin.dto.AmountDTO
+import com.example.firstkotlin.dto.BankDTO
 import com.example.firstkotlin.model.Bank
 import com.example.firstkotlin.service.BankService
 import com.example.firstkotlin.service.UserBankService
@@ -30,7 +31,7 @@ class BankController(private val service: BankService, private val userBankServi
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun addBank(@RequestBody bank: Bank): Bank = service.addBank(bank)
+    fun addBank(@RequestBody bank: BankDTO): Bank = service.addBank(bank)
 
     @PatchMapping
     fun updateBank(@RequestBody bank: Bank): Bank = service.updateBank(bank)

@@ -5,6 +5,7 @@ import com.example.firstkotlin.constants.UrlConstant.LOGIN_URL
 import com.example.firstkotlin.constants.UrlConstant.REFRESH_URL
 import com.example.firstkotlin.constants.UrlConstant.REGISTER_URL
 import com.example.firstkotlin.constants.UrlConstant.ROLES_URL
+import com.example.firstkotlin.constants.UrlConstant.TRANSACTION_URL
 import com.example.firstkotlin.enum.RoleType
 import com.example.firstkotlin.filter.CustomAuthenticationFilter
 import com.example.firstkotlin.filter.CustomAuthorizationFilter
@@ -41,8 +42,10 @@ class SecurityConfig(private val userDetailsService: UserDetailsService, private
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         http.authorizeRequests().antMatchers("/$REGISTER_URL/**", "/$LOGIN_URL/**", "/$REFRESH_URL/**")
             .permitAll()
-        http.authorizeRequests().antMatchers("/$BANKS_URL", "/$ROLES_URL")
+        http.authorizeRequests().antMatchers( "/$ROLES_URL")
             .hasAnyAuthority(RoleType.ADMIN.name)
+        http.authorizeRequests().antMatchers("/$BANKS_URL", "/$TRANSACTION_URL")
+            .hasAnyAuthority(RoleType.USER.name)
         http.authorizeRequests().anyRequest().authenticated()
         http.addFilter(customAuthFilter)
         http.addFilterBefore(CustomAuthorizationFilter(userService), UsernamePasswordAuthenticationFilter::class.java)

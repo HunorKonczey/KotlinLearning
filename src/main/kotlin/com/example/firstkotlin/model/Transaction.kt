@@ -18,7 +18,7 @@ open class Transaction(
     @DBRef(lazy = false)
     val receiverUserBank: UserBank,
     val transactionValue: Double,
-    val transactionStatus: TransactionStatus,
+    var transactionStatus: TransactionStatus,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
     val transactionDate: Date
