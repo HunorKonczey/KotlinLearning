@@ -72,7 +72,8 @@ class UserBankService(private val repository: UserBankRepository,
     fun getUserBankById(id: String) = repository.findById(ObjectId(id))
 
     fun deleteById(id: String) {
+        val userBankAmount = userBankAmountRepository.findByUserBankId(ObjectId(id))
+        userBankAmountRepository.delete(userBankAmount)
         repository.deleteById(ObjectId(id))
-        userBankAmountRepository.delete(userBankAmountRepository.findByUserBankId(ObjectId(id)))
     }
 }

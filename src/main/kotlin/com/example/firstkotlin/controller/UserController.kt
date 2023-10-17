@@ -1,7 +1,6 @@
 package com.example.firstkotlin.controller
 
 import com.example.firstkotlin.constants.JwtConstant
-import com.example.firstkotlin.constants.UrlConstant.REFRESH_URL
 import com.example.firstkotlin.constants.UrlConstant.USERS_URL
 import com.example.firstkotlin.dto.MessageDTO
 import com.example.firstkotlin.dto.RegisterDTO

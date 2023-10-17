@@ -11,10 +11,12 @@ import kotlin.NoSuchElementException
 @Repository
 class MockBankDataSource : BankRepositoryInterface {
 
+    val calendar = Calendar.getInstance();
+
     val banks = mutableListOf(
-        Bank(ObjectId(), "OTP", Date(1949, 1, 1)),
-        Bank(ObjectId(), "Raiffeisen", Date(1949, 1, 1)),
-        Bank( ObjectId(), "IGN", Date(1949, 1, 1))
+        Bank(ObjectId(), "OTP", calendar.time),
+        Bank(ObjectId(), "Raiffeisen", calendar.time),
+        Bank( ObjectId(), "IGN", calendar.time)
     )
 
     override fun getBanks(): Collection<Bank> {

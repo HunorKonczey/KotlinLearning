@@ -1,0 +1,13 @@
+version: '3.4'
+services:
+  sb-app:
+    build: .
+    container_name: "firstkotlin"
+    ports:
+      - "9000:9000"
+  mongodb:
+    image: mongo:latest
+    container_name: "mongodb"
+    command: mongod --port 27018
+    ports:
+      - "27018:27018"

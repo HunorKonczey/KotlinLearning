@@ -56,7 +56,7 @@ class BankController(private val service: BankService, private val userBankServi
    @PostMapping("user/amount")
    fun addAmount(@RequestBody amountDTO : AmountDTO) = userBankService.addAmount(amountDTO)
 
-    @DeleteMapping("user")
+    @GetMapping("user/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteUserBank(@RequestParam bankId: String) = userBankService.deleteById(bankId)
+    fun deleteUserBank(@PathVariable id: String) = userBankService.deleteById(id)
 }
