@@ -6,6 +6,7 @@ import com.example.firstkotlin.dto.BankDTO
 import com.example.firstkotlin.model.Bank
 import com.example.firstkotlin.service.BankService
 import com.example.firstkotlin.service.UserBankService
+import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -23,39 +24,50 @@ class BankController(private val service: BankService, private val userBankServi
     fun handleBadRequest(e: IllegalArgumentException): ResponseEntity<String> =
         ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
 
+    @Operation(operationId = "getBanks")
     @GetMapping
     fun getBanks(): Collection<Bank> = service.getBanks()
 
+    @Operation(operationId = "getBank")
     @GetMapping("/{id}")
     fun getBank(@PathVariable id: String) = service.getBank(id)
 
+    @Operation(operationId = "addBank")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun addBank(@RequestBody bank: BankDTO): Bank = service.addBank(bank)
 
+    @Operation(operationId = "updateBank")
     @PatchMapping
     fun updateBank(@RequestBody bank: Bank): Bank = service.updateBank(bank)
 
+    @Operation(operationId = "deleteBank")
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteBank(@PathVariable id: String) = service.deleteBankById(id)
 
+    @Operation(operationId = "saveUserBank")
     @PostMapping("user")
     @ResponseStatus(HttpStatus.CREATED)
     fun saveUserBank(@RequestParam bankId: String) = userBankService.saveUserBank(bankId)
 
+    @Operation(operationId = "getUserBanks")
     @GetMapping("user")
     fun getUserBanks() = userBankService.getUserBanks()
 
+    @Operation(operationId = "getUserBanksWithAmounts")
     @GetMapping("user/amounts")
     fun getUserBanksWithAmounts() = userBankService.getUserBanksWithAmounts()
 
+    @Operation(operationId = "getUserBanksWithoutLoggedUser")
     @GetMapping("user/others")
     fun getUserBanksWithoutLoggedUser() = userBankService.getUserBanksWithoutLoggedUser()
 
-   @PostMapping("user/amount")
-   fun addAmount(@RequestBody amountDTO : AmountDTO) = userBankService.addAmount(amountDTO)
+    @Operation(operationId = "addAmount")
+    @PostMapping("user/amount")
+    fun addAmount(@RequestBody amountDTO : AmountDTO) = userBankService.addAmount(amountDTO)
 
+    @Operation(operationId = "deleteUserBank")
     @GetMapping("user/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteUserBank(@PathVariable id: String) = userBankService.deleteById(id)

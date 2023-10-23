@@ -22,7 +22,6 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.web.cors.CorsConfiguration
-import javax.servlet.http.HttpServletRequest
 
 
 @Configuration
@@ -40,7 +39,19 @@ class SecurityConfig(private val userDetailsService: UserDetailsService, private
         http.cors().configurationSource { CorsConfiguration().applyPermitDefaultValues() }
         http.csrf().disable()
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        http.authorizeRequests().antMatchers("/$REGISTER_URL/**", "/$LOGIN_URL/**", "/$REFRESH_URL/**")
+        http.authorizeRequests()
+            .antMatchers(
+                "/$REGISTER_URL/**",
+                "/$LOGIN_URL/**",
+                "/$REFRESH_URL/**",
+                "/v3/api-docs",
+                "/configuration/ui",
+                "/swagger-resources/**",
+                "/swagger-ui/**",
+                "/configuration/security",
+                "/swagger-ui.html",
+                "/swagger-ui/index.html",
+                "/webjars/**")
             .permitAll()
         http.authorizeRequests().antMatchers( "/$ROLES_URL")
             .hasAnyAuthority(RoleType.ADMIN.name)
