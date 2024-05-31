@@ -1,5 +1,7 @@
 FROM gradle:latest AS build
 
+WORKDIR /firstkotlin
+
 COPY gradlew .
 COPY gradle gradle
 
