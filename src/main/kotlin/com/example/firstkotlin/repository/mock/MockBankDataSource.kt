@@ -14,9 +14,9 @@ class MockBankDataSource : BankRepositoryInterface {
     val calendar = Calendar.getInstance();
 
     val banks = mutableListOf(
-        Bank(ObjectId(), "OTP", calendar.time),
-        Bank(ObjectId(), "Raiffeisen", calendar.time),
-        Bank( ObjectId(), "IGN", calendar.time)
+        Bank(ObjectId(), "OTP", calendar.time, ""),
+        Bank(ObjectId(), "Raiffeisen", calendar.time, ""),
+        Bank(ObjectId(), "IGN", calendar.time, "")
     )
 
     override fun getBanks(): Collection<Bank> {

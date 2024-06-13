@@ -3,18 +3,25 @@ package com.example.firstkotlin.controller
 import com.example.firstkotlin.constants.UrlConstant.BANKS_URL
 import com.example.firstkotlin.dto.AmountDTO
 import com.example.firstkotlin.dto.BankDTO
+import com.example.firstkotlin.filter.NullStringEditor
 import com.example.firstkotlin.model.Bank
 import com.example.firstkotlin.service.BankService
 import com.example.firstkotlin.service.UserBankService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.WebDataBinder
 import org.springframework.web.bind.annotation.*
-import java.lang.IllegalArgumentException
+
 
 @RestController
 @RequestMapping(BANKS_URL)
 class BankController(private val service: BankService, private val userBankService: UserBankService) {
+
+    @InitBinder
+    fun initBinder(binder: WebDataBinder) {
+        binder.registerCustomEditor(String::class.java, NullStringEditor())
+    }
 
     @ExceptionHandler(NoSuchElementException::class)
     fun handleNotFound(e: NoSuchElementException): ResponseEntity<String> =
@@ -35,14 +42,14 @@ class BankController(private val service: BankService, private val userBankServi
     @Operation(operationId = "addBank")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun addBank(@RequestBody bank: BankDTO): Bank = service.addBank(bank)
+    fun addBank(@ModelAttribute bank: BankDTO): Bank  = service.addBank(bank)
 
     @Operation(operationId = "updateBank")
-    @PatchMapping
-    fun updateBank(@RequestBody bank: Bank): Bank = service.updateBank(bank)
+    @PostMapping("update")
+    fun updateBank(@ModelAttribute bank: BankDTO): Bank = service.updateBank(bank)
 
     @Operation(operationId = "deleteBank")
-    @DeleteMapping("{id}")
+    @GetMapping("delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteBank(@PathVariable id: String) = service.deleteBankById(id)
 

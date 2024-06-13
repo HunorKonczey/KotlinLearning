@@ -13,7 +13,8 @@ open class Bank(
     var id: ObjectId? = ObjectId(),
     var name: String,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    var foundationDate: Date
+    var foundationDate: Date,
+    var imagePath: String = ""
 ) {
     @JsonGetter("id")
     fun getId(): String = id!!.toHexString()

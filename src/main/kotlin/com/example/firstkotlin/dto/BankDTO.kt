@@ -1,6 +1,8 @@
 package com.example.firstkotlin.dto
 
-import java.util.Date
+import org.springframework.web.multipart.MultipartFile
 
-data class BankDTO(val bankName: String,
-                   val foundationDate: Date)
+data class BankDTO(var id: String = "",
+                   val bankName: String,
+                   val foundationDate: String,
+                   var imageFile: MultipartFile? = null)

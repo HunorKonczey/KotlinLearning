@@ -1,5 +1,6 @@
 package com.example.firstkotlin.security
 
+import com.example.firstkotlin.constants.UrlConstant.BANKS_IMAGE_URL
 import com.example.firstkotlin.constants.UrlConstant.BANKS_URL
 import com.example.firstkotlin.constants.UrlConstant.LOGIN_URL
 import com.example.firstkotlin.constants.UrlConstant.REFRESH_URL
@@ -44,6 +45,7 @@ class SecurityConfig(private val userDetailsService: UserDetailsService, private
                 "/$REGISTER_URL/**",
                 "/$LOGIN_URL/**",
                 "/$REFRESH_URL/**",
+                "/$BANKS_IMAGE_URL**",
                 "/v3/api-docs",
                 "/configuration/ui",
                 "/swagger-resources/**",

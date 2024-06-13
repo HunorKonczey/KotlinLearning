@@ -1,5 +1,6 @@
 package com.example.firstkotlin
 
+import com.example.firstkotlin.constants.UrlConstant.BANKS_IMAGE_URL
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import org.bson.types.ObjectId
 import org.springframework.context.annotation.Configuration
@@ -10,6 +11,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 
@@ -20,6 +22,8 @@ class WebConfig : WebMvcConfigurer {
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
             .allowedOrigins("http://localhost:9000", "http://localhost:9001")
+            .allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH")
+            .allowedHeaders("*")
             .allowCredentials(true)
     }
 
@@ -28,6 +32,7 @@ class WebConfig : WebMvcConfigurer {
         messageConverter.setSupportedMediaTypes(
             listOf(
                 MediaType.APPLICATION_JSON,
+                MediaType.MULTIPART_FORM_DATA,
                 MediaType.TEXT_PLAIN,
                 MediaType.ALL
             )
@@ -37,5 +42,10 @@ class WebConfig : WebMvcConfigurer {
         builder.serializerByType(ObjectId::class.java, ToStringSerializer())
         val converter = MappingJackson2HttpMessageConverter(builder.build())
         converters.add(converter)
+    }
+
+    override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
+        registry.addResourceHandler("${BANKS_IMAGE_URL}**")
+            .addResourceLocations("file:uploads/banks/")
     }
 }
